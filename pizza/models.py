@@ -19,3 +19,13 @@ class Pizza(models.Model):
 
     def __str__(self):
         return f'{self.size} Pizza with {self.topping1} and {self.topping2} '
+
+class Quant(models.Model):
+    quant =[
+        ('2', 2),
+        ('3', 3),
+        ('4', 4),
+        ('5', 5),
+        ('6', 6),
+    ]
+    number = models.CharField('Number', max_length=2, choices=quant)
