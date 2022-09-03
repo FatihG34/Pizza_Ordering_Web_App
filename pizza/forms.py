@@ -1,6 +1,5 @@
-from dataclasses import fields
 from django import forms
-from pizza.models import Pizza, Quant
+from pizza.models import Pizza
 
 
 class PizzaForm(forms.ModelForm):
@@ -11,7 +10,4 @@ class PizzaForm(forms.ModelForm):
 
 
 class MultiOrderingForm(forms.Form):
-    class Meta:
-        model:Quant
-        fields='__all__'
-        
+    number=forms.IntegerField(required=False, min_value=2, max_value=6)
