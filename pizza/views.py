@@ -7,13 +7,16 @@ def home(request):
 
 def ordering_pizza(request):
     form = PizzaForm()
+    form_multi = MultiOrderingForm(request.POST or None)
+    print(request.POST)
     if request.method == 'POST':
         form = PizzaForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')
-    context={
-        'form': form
+    context = {
+        'form' : form,
+        'form_multi': form_multi
     }
     return render(request, 'pizza/order.html', context)
 
@@ -22,9 +25,10 @@ def multi_order(request):
     form_multi = MultiOrderingForm(request.POST or None)
     if form_multi.is_valid():
         form_multi.save()
-        return redirect('home')
+        number = MultiOrderingForm.objects.all()
+        return redirect('multiorder')
     context = {
-        'form' : form,
-        'form_multi': form_multi
+        'form':form,
+        'number' : number
     }
     return render(request, 'pizza/pizzas.html', context)

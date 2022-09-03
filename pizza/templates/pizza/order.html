@@ -1,11 +1,15 @@
 {% extends 'pizza/base.html' %}
-
 {% block pizza %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Order Pizza">
-</form>
-    
+<div class="container mt-3">
+    <form action="" method="post"  >
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Order Pizza">
+    </form>
+    <form action="" method='post' class='mt-3'>
+        {% csrf_token %}
+        {{form_multi.as_p}}
+        <input type="submit" value="Multi Order">
+    </form>  
+</div>
 {% endblock pizza %}
-    
