@@ -59,14 +59,18 @@ def multi_order(request):
         return render(request, 'pizza/pizzas.html', {'formset': formset})
 
 
-def edit_order(request, id):
-    pizza = Pizza.objects.get(id=id)
+def edit_order(request, pk):
+    pizza = Pizza.objects.get(pk=pk)
     form = PizzaForm(instance=pizza)
     if request.method == 'POST':
         form = PizzaForm(request.POST, instance=pizza)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            messages.success(request, 'Order has been updated.')
+            return render(request, 'pizza/edit_order.html', {
+                'pizza': pizza,
+                'form': form
+            })
     context = {
         'pizza': pizza,
         'form': form
