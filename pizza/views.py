@@ -27,9 +27,8 @@ def order(request):
             make_pizza = PizzaForm()
         else:
             make_pizza_pk = None
-            messages.warning(request, 'Pizza order failded, try again!')
-        return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': make_pizza,
-                                                    'multiple_form': form_mult})
+            messages.warning(request, 'Pizza order failed, try again!')
+        return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': pizza_form, 'multiple_form': form_mult})
     else:
         form = PizzaForm()
         context = {
@@ -43,7 +42,8 @@ def multi_order(request):
     number_of_pizzas = 2
     filled_multiple_pizza_form = MultiOrderingForm(request.GET)
     if filled_multiple_pizza_form.is_valid():
-        number_of_pizzas = filled_multiple_pizza_form.cleaned_data.get('number')
+        number_of_pizzas = filled_multiple_pizza_form.cleaned_data.get(
+            'number')
     PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
     formset = PizzaFormSet()
     if request.method == "POST":
@@ -53,7 +53,8 @@ def multi_order(request):
                 form.save()
                 messages.success(request, 'Pizzas have been ordered!')
         else:
-            messages.warning(request, 'Order was not created, please try again')
+            messages.warning(
+                request, 'Order was not created, please try again')
         return render(request, 'pizza/pizzas.html', {'formset': formset})
     else:
         return render(request, 'pizza/pizzas.html', {'formset': formset})
