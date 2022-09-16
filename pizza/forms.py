@@ -10,4 +10,4 @@ class PizzaForm(forms.ModelForm):
 
 
 class MultiOrderingForm(forms.Form):
-    number=forms.IntegerField(required=False, min_value=2, max_value=6)
+    number=forms.IntegerField(min_value=2, max_value=6)

@@ -1,10 +1,15 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from pizza.forms import MultiOrderingForm, PizzaForm
 from pizza.models import Pizza
+from django.contrib import messages
+from django.forms import formset_factory
 
 # Create your views here.
+
+
 def home(request):
     return render(request, 'pizza/home.html')
+
 
 def order(request):
     form_mult = MultiOrderingForm()
@@ -13,30 +18,46 @@ def order(request):
         if pizza_form.is_valid():
             make_pizza = pizza_form.save()
             make_pizza_pk = make_pizza.id
-            note = f'Thanks for ordering! You {make_pizza.cleaned_data["size"]}, {make_pizza.cleaned_data["topping1"]} and {make_pizza.cleaned_data["topping2"]} pizza on its way.'
-            pizza_form.save()
+
+            size = make_pizza.cleaned_data.get('size')
+            topping1 = make_pizza.cleaned_data.get('topping1')
+            topping2 = make_pizza.cleaned_data.get('topping2')
+            messages.success(
+                request, f"Thanks for ordering! {size},{topping1} and {topping2} pizza is on its way!")
+            make_pizza = PizzaForm()
         else:
             make_pizza_pk = None
-            note = 'Make your choise !'
-            return render(request, 'pizza/order.html', {"make_pizza_pk":make_pizza_pk, "pizza_form": pizza_form, "note": note})
+            messages.warning(request, 'Pizza order failded, try again!')
+        return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': make_pizza,
+                                                    'multiple_form': form_mult})
     else:
         form = PizzaForm()
         context = {
-            "form":form,
+            "form": form,
             "form_mult": form_mult
         }
         return render(request, 'pizza/order.html', context)
 
 
-
 def multi_order(request):
-    form = PizzaForm(request.POST or None)
-    if form.is_valid():
-        return redirect('pizzas')
-    context = {
-        'form':form,
-    }
-    return render(request, 'pizza/pizzas.html', context)
+    number_of_pizzas = 2
+    filled_multiple_pizza_form = MultiOrderingForm(request.GET)
+    if filled_multiple_pizza_form.is_valid():
+        number_of_pizzas = filled_multiple_pizza_form.cleaned_data.get('number')
+    PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
+    formset = PizzaFormSet()
+    if request.method == "POST":
+        filled_formset = PizzaFormSet(request.POST)
+        if filled_formset.is_valid():
+            for form in filled_formset:
+                form.save()
+                messages.success(request, 'Pizzas have been ordered!')
+        else:
+            messages.warning(request, 'Order was not created, please try again')
+        return render(request, 'pizza/pizzas.html', {'formset': formset})
+    else:
+        return render(request, 'pizza/pizzas.html', {'formset': formset})
+
 
 def edit_order(request, id):
     pizza = Pizza.objects.get(id=id)
@@ -46,8 +67,8 @@ def edit_order(request, id):
         if form.is_valid():
             form.save()
             return redirect('home')
-    context ={
-        'pizza' : pizza,
+    context = {
+        'pizza': pizza,
         'form': form
     }
     return render(request, 'pizza/edit_order.html', context)
