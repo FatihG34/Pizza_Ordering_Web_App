@@ -31,11 +31,11 @@ def order(request):
         return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': pizza_form, 'multiple_form': form_mult})
     else:
         form = PizzaForm()
-        context = {
-            "form": form,
-            "form_mult": form_mult
-        }
-        return render(request, 'pizza/order.html', context)
+    context = {
+        "pizzaform": form,
+        "multiple_form": form_mult
+    }
+    return render(request, 'pizza/order.html', context)
 
 
 def multi_order(request):

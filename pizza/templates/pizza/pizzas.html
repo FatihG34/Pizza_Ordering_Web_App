@@ -1,12 +1,10 @@
 {% extends 'pizza/base.html' %}
 
 {% block pizza %}
-<div class="container mt-3">
+<div class="container-fluid mt-3">
 <form action="" method="post">
     {% csrf_token %}
-   <div class='container my-5'>
-       {{form}}
-   </div> 
+       {{formset}}
     <input type="submit" value="Order Pizza">
 </form>
 </div>
