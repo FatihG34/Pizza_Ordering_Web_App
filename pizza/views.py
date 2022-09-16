@@ -7,19 +7,25 @@ def home(request):
     return render(request, 'pizza/home.html')
 
 def order(request):
-    form = PizzaForm(request.POST or None)
-    form_mult = MultiOrderingForm(request.POST or None)
-    if form_mult.is_valid():
-        form_mult.save()
-        return redirect('pizzas')
-    elif form.is_valid():
-        form.save()
-        return redirect('home')
-    context = {
-        'form' : form,
-        'form_mult': form_mult
-    }
-    return render(request, 'pizza/order.html', context)
+    form_mult = MultiOrderingForm()
+    if request.method == 'POST':
+        pizza_form = PizzaForm(request.POST)
+        if pizza_form.is_valid():
+            make_pizza = pizza_form.save()
+            make_pizza_pk = make_pizza.id
+            note = f'Thanks for ordering! You {make_pizza.cleaned_data["size"]}, {make_pizza.cleaned_data["topping1"]} and {make_pizza.cleaned_data["topping2"]} pizza on its way.'
+            pizza_form.save()
+        else:
+            make_pizza_pk = None
+            note = 'Make your choise !'
+            return render(request, 'pizza/order.html', {"make_pizza_pk":make_pizza_pk, "pizza_form": pizza_form, "note": note})
+    else:
+        form = PizzaForm()
+        context = {
+            "form":form,
+            "form_mult": form_mult
+        }
+        return render(request, 'pizza/order.html', context)
 
 
 

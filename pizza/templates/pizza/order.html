@@ -1,6 +1,25 @@
 {% extends 'pizza/base.html' %}
 {% block pizza %}
+<div class="container">
+    <h3>{{note}}</h3>
+    
+    {% if created_pizza_pk %}
+        <a href="{% url 'edit_order' created_pizza_pk %}"> Edit Your Order</a>
+    {% endif %}
+        
+</div>
 <div class="container mt-3">
+        {% comment %} <form action="{% url 'order' %}" method="post" novalidate>
+        {% csrf_token %}
+        {% for field in pizza_form %}
+        <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{field}}
+         </div> 
+        {% endfor %}
+        <input type="submit" value="order pizza">
+    </form> {% endcomment %}
     <form action="" method="post"  >
         {% csrf_token %}
         {{form.as_p}}
