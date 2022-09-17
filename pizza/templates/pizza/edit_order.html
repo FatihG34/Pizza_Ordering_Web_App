@@ -1,10 +1,27 @@
 {% extends 'pizza/base.html' %} 
+{% load crispy_forms_tags %}
 {% block pizza %}
 
 <div class="container mt-3">
+  <div class="messages">
+      {% if messages %}
+          <div class="">
+            <ul>
+                {% for message in messages %}
+                    <p{% if message.tags %} class="text-center alert alert-{{message.tags }}" {% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Important:
+                    {%endif %}
+                    {{ message }}
+                    </p>
+                {% endfor %}
+            </ul>
+          </div>
+      {% endif %}
+  </div>
   <form action="" method="post">
     {% csrf_token %} 
-    {{form.as_p}}
+    {{form|crispy}}
     <input type="submit" value="Edit Order" />
   </form>
 </div>

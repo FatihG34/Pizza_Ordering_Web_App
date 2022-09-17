@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sun's Garden</title>
+    <title>Sun Garden Pizza</title>
         <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -22,11 +22,19 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.11.2/css/all.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<style>
+  body{
+    font-family: 'Merriweather', serif;
+  }
+</style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-primary text-uppercase">
+    <nav class="container-fluid navbar navbar-expand-md navbar-light bg-warning text-uppercase position-fixed top-0">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">Pizza</a>
+      <a class="navbar-brand" href="{% url 'home' %}">Sun Pizza</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -34,18 +42,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 me-3 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'order' %} ">Order</a>
+            <a class="nav-link active" href="{% url 'order' %} ">Order</a>
           </li>
-          {% comment %} <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'pizzas' %} ">Pizzas</a>
-          </li> {% endcomment %}
       </div>
     </div>
   </nav>
+  <div style="height: calc(100vh - 60px)!important;">
     {% block pizza %} {% endblock pizza %}
+  </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
     crossorigin="anonymous"></script>
