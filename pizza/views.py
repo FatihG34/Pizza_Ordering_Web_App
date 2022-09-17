@@ -19,23 +19,20 @@ def order(request):
             make_pizza = pizza_form.save()
             make_pizza_pk = make_pizza.id
 
-            size = make_pizza.cleaned_data.get('size')
-            topping1 = make_pizza.cleaned_data.get('topping1')
-            topping2 = make_pizza.cleaned_data.get('topping2')
+            size = pizza_form.cleaned_data.get('size')
+            topping1 = pizza_form.cleaned_data.get('topping1')
+            topping2 = pizza_form.cleaned_data.get('topping2')
             messages.success(
                 request, f"Thanks for ordering! {size},{topping1} and {topping2} pizza is on its way!")
             make_pizza = PizzaForm()
+            return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': pizza_form, 'multiple_form': form_mult})
         else:
             make_pizza_pk = None
             messages.warning(request, 'Pizza order failed, try again!')
-        return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': pizza_form, 'multiple_form': form_mult})
+            return render(request, 'pizza/order.html', {'created_pizza_pk': make_pizza_pk, 'pizzaform': pizza_form, 'multiple_form': form_mult})
     else:
         form = PizzaForm()
-    context = {
-        "pizzaform": form,
-        "multiple_form": form_mult
-    }
-    return render(request, 'pizza/order.html', context)
+        return render(request, 'pizza/order.html', {"pizzaform": form,"multiple_form": form_mult})
 
 
 def multi_order(request):
