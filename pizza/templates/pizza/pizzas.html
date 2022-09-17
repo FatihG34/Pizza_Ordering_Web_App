@@ -1,19 +1,18 @@
 {% extends 'pizza/base.html' %}
 {% load crispy_forms_tags %}
 {% block pizza %}
-<div class="container mt-3">
-<form action="" method="post">
+<div class="container mt-5">
+<form action="" method="post" class="form-inline-blok bg-light p-3">
     {% csrf_token %}
     {{crispy}}
-    <ul>
+    <ul class="d-flex justify-content-start gap-3">
         {% for form in formset %}
         <li>
-            {{form}}
+            {{form|crispy}}
         </li>
         {% endfor %}
     </ul>
-        {% comment %} {{formset}} {% endcomment %}
-    <input type="submit" value="Order Pizza">
+    <input type="submit" value="Order Pizza" class="btn btn-success mx-5">
 </form>
 </div>
 {% endblock pizza %}
